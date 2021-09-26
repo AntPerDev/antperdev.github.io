@@ -4,15 +4,30 @@ title: About
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
+Hi!
+My name is Antonio.
 
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
+In recent years I have done various training related to web development. The last three years I have completed the higher degree training cycle in web development (Ciclo Formación Grado Superior en Desarrollo Web). In which I have acquired programming skills in:
 
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
+- POO
+- Java
+- Sql
 
+Other technologies such as:
 
-[jekyll-organization]: https://github.com/jekyll
+- Html
+- Css
+- Javascript
+- Php
+
+And markup languages ​​such as:
+
+- XML,
+- XML definition with DTD 
+- transformations with XSLT
+
+Servers and a lot of other technologies like Apache or Bind. I have been completing my training on online platforms such as Openwebinars ( Python, Django, DjangoRestFramework) and Udemy ( Js, Angular). Thanks to which I have advanced in my knowledge.
+
+I still have a lot to learn and I would like to do it in a real environment, programming integrated in a development team.
+
+Thanks for read me.
