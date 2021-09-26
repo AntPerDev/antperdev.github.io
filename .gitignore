@@ -1,5 +1,7 @@
 _site
+.vscode
 .sass-cache
 .jekyll-cache
 .jekyll-metadata
 vendor
+2021-09-24-welcome-to-jekyll.markdown
