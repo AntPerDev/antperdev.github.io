@@ -7,7 +7,7 @@ permalink: /about/
 Hi!
 My name is Antonio.
 
-In recent years I have done various training related to web development. The last three years I have completed the higher degree training cycle in web development (Ciclo Formación Grado Superior en Desarrollo Web). In which I have acquired programming skills in:
+In recent years I have take training couses and webinars related to web development. The last three years I have completed the higher degree training cycle in web development (Ciclo Formación Grado Superior en Desarrollo Web). In which I have acquired programming skills in:
 
 - POO
 - Java
