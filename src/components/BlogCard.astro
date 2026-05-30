@@ -1,0 +1,272 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  tags: string[];
+  slug: string;
+  classDelay?: string;
+}
+
+const { title, description, date, tags, slug, classDelay = "" } = Astro.props;
+
+// Formatear la fecha en español de forma elegante
+const formattedDate = date.toLocaleDateString('es-ES', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+---
+
+<article class={`blog-card animate-fade-in ${classDelay}`} id={`blog-card-${slug}`}>
+  <!-- Efecto de brillo de fondo que reacciona en hover -->
+  <div class="card-halo" aria-hidden="true"></div>
+
+  <a href={`/blog/${slug}`} class="card-link" aria-label={`Leer artículo: ${title}`}>
+    <div class="card-top-line" aria-hidden="true"></div>
+
+    <div class="card-content">
+      <!-- Fila superior: Fecha -->
+      <div class="card-meta">
+        <span class="card-date-badge">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="calendar-icon" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          {formattedDate}
+        </span>
+      </div>
+
+      <!-- Título con gradiente sutil al hover -->
+      <h3 class="card-title">{title}</h3>
+
+      <!-- Descripción -->
+      <p class="card-description">{description}</p>
+
+      <!-- Footer: tags y enlace de lectura -->
+      <div class="card-footer">
+        <div class="card-tags" aria-label="Temas del artículo">
+          {tags.map((tag) => (
+            <span class="tech-tag">{tag}</span>
+          ))}
+        </div>
+
+        <span class="read-more-text">
+          Leer Post <span class="arrow">→</span>
+        </span>
+      </div>
+    </div>
+  </a>
+</article>
+
+<style>
+  /* ---- TARJETA DE BLOG ---- */
+  .blog-card {
+    position: relative;
+    background: linear-gradient(145deg, rgba(20, 20, 35, 0.85), rgba(12, 12, 22, 0.95));
+    border: 1px solid rgba(255, 107, 0, 0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition:
+      transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      border-color 300ms ease,
+      box-shadow 350ms ease;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  /* Halo de brillo naranja/violeta en hover */
+  .card-halo {
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    background: radial-gradient(circle at 80% 20%, rgba(124, 58, 237, 0.08), transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(255, 107, 0, 0.06), transparent 50%);
+    opacity: 0;
+    transition: opacity 450ms ease;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .blog-card:hover .card-halo {
+    opacity: 1;
+  }
+
+  .blog-card:hover {
+    transform: translateY(-8px) scale(1.01);
+    border-color: rgba(255, 107, 0, 0.4);
+    box-shadow:
+      0 0 0 1px rgba(255, 107, 0, 0.1),
+      0 8px 32px rgba(255, 107, 0, 0.1),
+      0 24px 60px rgba(0, 0, 0, 0.45),
+      0 0 80px rgba(124, 58, 237, 0.03);
+  }
+
+  /* Línea superior con gradiente de acento */
+  .card-top-line {
+    position: absolute;
+    top: 0;
+    left: 8%;
+    right: 8%;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--orange-core), var(--accent-violet), transparent);
+    opacity: 0;
+    transition: opacity 300ms ease;
+    z-index: 10;
+  }
+
+  .blog-card:hover .card-top-line {
+    opacity: 1;
+  }
+
+  .card-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+    text-decoration: none;
+  }
+
+  /* ---- CONTENIDO ---- */
+  .card-content {
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 0.85rem;
+  }
+
+  /* ---- META ---- */
+  .card-meta {
+    display: flex;
+    align-items: center;
+  }
+
+  .card-date-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    transition: color var(--transition);
+  }
+
+  .blog-card:hover .card-date-badge {
+    color: var(--text-secondary);
+  }
+
+  .calendar-icon {
+    width: 0.9rem;
+    height: 0.9rem;
+    color: var(--orange-core);
+    opacity: 0.8;
+  }
+
+  /* ---- TÍTULO ---- */
+  .card-title {
+    font-size: 1.45rem;
+    color: var(--text-primary);
+    transition: color var(--transition), text-shadow var(--transition);
+    line-height: 1.25;
+  }
+
+  .blog-card:hover .card-title {
+    color: var(--text-primary);
+    background: linear-gradient(135deg, #ffffff 60%, var(--orange-glow) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 15px rgba(255, 107, 0, 0.15);
+  }
+
+  /* ---- DESCRIPCIÓN ---- */
+  .card-description {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ---- FOOTER ---- */
+  .card-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .tech-tag {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition:
+      border-color var(--transition),
+      color var(--transition),
+      background var(--transition);
+  }
+
+  .blog-card:hover .tech-tag {
+    border-color: rgba(124, 58, 237, 0.25);
+    color: var(--text-secondary);
+    background: rgba(124, 58, 237, 0.05);
+  }
+
+  .tech-tag:hover {
+    border-color: rgba(255, 107, 0, 0.4) !important;
+    color: var(--orange-bright) !important;
+    background: rgba(255, 107, 0, 0.05) !important;
+  }
+
+  .read-more-text {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--orange-core);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: color var(--transition), text-shadow var(--transition);
+  }
+
+  .blog-card:hover .read-more-text {
+    color: var(--orange-glow);
+    text-shadow: 0 0 12px rgba(255, 165, 0, 0.4);
+  }
+
+  .arrow {
+    display: inline-block;
+    transition: transform var(--transition-bounce);
+  }
+
+  .blog-card:hover .arrow {
+    transform: translateX(6px);
+  }
+</style>

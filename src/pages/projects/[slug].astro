@@ -1,0 +1,203 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectHero from '../../components/ProjectHero.astro';
+import { getCollection } from 'astro:content';
+
+// Generar rutas estáticas estáticamente en build-time
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  // Ordenar por fecha cronológica descendente para calcular navegación coherente
+  const sortedProjects = projects.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+  
+  return sortedProjects.map((project, index) => {
+    // Siguiente en el array (proyecto anterior cronológicamente)
+    const prev = index < sortedProjects.length - 1 ? sortedProjects[index + 1] : null;
+    // Anterior en el array (proyecto siguiente cronológicamente)
+    const next = index > 0 ? sortedProjects[index - 1] : null;
+    
+    return {
+      params: { slug: project.slug },
+      props: { project, prev, next },
+    };
+  });
+}
+
+const { project, prev, next } = Astro.props;
+const { Content } = await project.render();
+---
+
+<BaseLayout 
+  title={`${project.data.title} | antperdev Portfolio`}
+  description={project.data.description}
+  image={project.data.cover}
+>
+  <!-- Hero del detalle de proyecto -->
+  <ProjectHero
+    title={project.data.title}
+    description={project.data.description}
+    repo={project.data.repo}
+    live={project.data.live}
+    tech={project.data.tech}
+    stars={project.data.stars}
+    slug={project.slug}
+  />
+
+  <div class="project-detail-body">
+    <div class="detail-container">
+      
+      <!-- Si hay imagen de portada, mostrarla -->
+      {project.data.cover && (
+        <div class="cover-image-wrapper">
+          <img 
+            src={project.data.cover} 
+            alt={`Detalles visuales del proyecto ${project.data.title}`} 
+            class="cover-image"
+          />
+        </div>
+      )}
+
+      <!-- Contenido Markdown renderizado con tipografía premium (.prose) -->
+      <article class="prose-content prose" id="project-markdown-content">
+        <Content />
+      </article>
+
+      <hr class="separator" />
+
+      <!-- Navegación inferior: proyecto anterior / siguiente -->
+      <nav class="project-navigation" aria-label="Navegación de proyectos">
+        <div class="nav-item prev-item">
+          {prev && (
+            <a href={`/projects/${prev.slug}`} class="nav-nav-link prev" aria-label={`Ir al proyecto anterior: ${prev.data.title}`}>
+              <span class="nav-meta">← PROYECTO ANTERIOR</span>
+              <span class="nav-title">{prev.data.title}</span>
+            </a>
+          )}
+        </div>
+        
+        <div class="nav-item next-item">
+          {next && (
+            <a href={`/projects/${next.slug}`} class="nav-nav-link next" aria-label={`Ir al proyecto siguiente: ${next.data.title}`}>
+              <span class="nav-meta">PROYECTO SIGUIENTE →</span>
+              <span class="nav-title">{next.data.title}</span>
+            </a>
+          )}
+        </div>
+      </nav>
+
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .project-detail-body {
+    padding: 4rem 1.5rem;
+    background-color: var(--bg-primary);
+  }
+
+  .detail-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* --- IMAGEN DE PORTADA --- */
+  .cover-image-wrapper {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-bottom: 4rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+
+  .cover-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* --- CONTENIDO PROSE --- */
+  .prose-content {
+    margin-bottom: 5rem;
+  }
+
+  .separator {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border), transparent);
+    margin-bottom: 3.5rem;
+  }
+
+  /* --- NAVEGACIÓN DE PROYECTOS --- */
+  .project-navigation {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nav-item.next-item {
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .nav-nav-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 1rem 1.25rem;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    width: 100%;
+    transition: transform var(--transition), border-color var(--transition), background-color var(--transition);
+  }
+
+  .nav-nav-link:hover {
+    border-color: var(--border-hover);
+    background-color: rgba(255, 107, 0, 0.03);
+  }
+
+  .nav-nav-link.prev:hover {
+    transform: translateX(-4px);
+  }
+
+  .nav-nav-link.next:hover {
+    transform: translateX(4px);
+  }
+
+  .nav-meta {
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--orange-core);
+    letter-spacing: 0.08em;
+  }
+
+  .nav-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  /* Ajustes Responsivos */
+  @media (max-width: 640px) {
+    .project-navigation {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+    
+    .nav-item.next-item {
+      align-items: flex-start;
+      text-align: left;
+    }
+    
+    .cover-image-wrapper {
+      margin-bottom: 2.5rem;
+    }
+  }
+</style>

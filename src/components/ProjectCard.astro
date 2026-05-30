@@ -1,0 +1,435 @@
+---
+import { getLiveLink } from '../utils/github';
+
+interface Props {
+  title: string;
+  description: string;
+  repo: string;
+  live: string;
+  tech: string[];
+  stars: number;
+  cover?: string;
+  slug: string;
+  classDelay?: string;
+}
+
+const { title, description, repo, live, tech, stars, cover, slug, classDelay = "" } = Astro.props;
+
+// Invocar la lógica de negocio purificada y sanitizada en build-time
+const resolvedLive = await getLiveLink(live, repo, slug);
+const hasLive = resolvedLive !== null && resolvedLive !== '';
+---
+
+<article class={`project-card animate-fade-in ${classDelay}`} id={`card-${slug}`}>
+
+  <!-- Halo de brillo que aparece en hover (pseudo-animado con JS) -->
+  <div class="card-halo" aria-hidden="true"></div>
+
+  <a href={`/projects/${slug}`} class="card-link" aria-label={`Ver detalles del proyecto ${title}`}>
+
+    <!-- Borde superior con línea de gradiente -->
+    <div class="card-top-line" aria-hidden="true"></div>
+
+    {cover ? (
+      <div class="card-image-container">
+        <img 
+          src={cover} 
+          alt={`Imagen de portada para ${title}`} 
+          class="card-image"
+          loading="lazy"
+        />
+        <!-- Overlay con degradado al hacer hover -->
+        <div class="image-overlay" aria-hidden="true"></div>
+
+        {hasLive && (
+          <div class="live-indicator" aria-label="Este proyecto está en vivo">
+            <span class="live-dot"></span>
+            <span class="live-text">LIVE</span>
+          </div>
+        )}
+      </div>
+    ) : (
+      <div class="card-image-fallback">
+        <div class="fallback-bg" aria-hidden="true"></div>
+        <span class="fallback-icon" aria-hidden="true">&lt;/&gt;</span>
+        {hasLive && (
+          <div class="live-indicator" aria-label="Este proyecto está en vivo">
+            <span class="live-dot"></span>
+            <span class="live-text">LIVE</span>
+          </div>
+        )}
+      </div>
+    )}
+
+    <div class="card-content">
+      <div class="card-header">
+        <h3 class="card-title">{title}</h3>
+        <div class="card-stars" title={`${stars} estrellas en GitHub`} aria-label={`${stars} estrellas`}>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="star-icon" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/>
+          </svg>
+          <span class="stars-count">{stars}</span>
+        </div>
+      </div>
+
+      <p class="card-description">{description}</p>
+
+      <div class="card-footer">
+        <div class="card-tags" aria-label="Tecnologías utilizadas">
+          {tech.map((tag) => (
+            <span class="tech-tag">{tag}</span>
+          ))}
+        </div>
+        
+        <span class="read-more-text">
+          Explorar detalles <span class="arrow">→</span>
+        </span>
+      </div>
+    </div>
+  </a>
+</article>
+
+<style>
+  /* ---- TARJETA BASE ---- */
+  .project-card {
+    position: relative;
+    background: linear-gradient(145deg, rgba(18, 18, 31, 0.9), rgba(14, 14, 26, 0.95));
+    border: 1px solid rgba(255, 107, 0, 0.12);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition:
+      transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      border-color 300ms ease,
+      box-shadow 350ms ease;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  /* Halo de brillo naranja que emerge en hover */
+  .card-halo {
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255, 107, 0, 0.06), transparent 70%);
+    opacity: 0;
+    transition: opacity 400ms ease;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .project-card:hover .card-halo {
+    opacity: 1;
+  }
+
+  .project-card:hover {
+    transform: translateY(-8px) scale(1.01);
+    border-color: rgba(255, 107, 0, 0.45);
+    box-shadow:
+      0 0 0 1px rgba(255, 107, 0, 0.1),
+      0 8px 32px rgba(255, 107, 0, 0.12),
+      0 24px 60px rgba(0, 0, 0, 0.4),
+      0 0 80px rgba(255, 107, 0, 0.04);
+  }
+
+  /* Línea superior de gradiente */
+  .card-top-line {
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255, 107, 0, 0.5), transparent);
+    opacity: 0;
+    transition: opacity 300ms ease;
+    z-index: 10;
+  }
+
+  .project-card:hover .card-top-line {
+    opacity: 1;
+  }
+
+  .card-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ---- IMAGEN ---- */
+  .card-image-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    background-color: var(--bg-secondary);
+  }
+
+  .card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1), filter 400ms ease;
+    filter: brightness(0.9) saturate(1.1);
+  }
+
+  .project-card:hover .card-image {
+    transform: scale(1.07);
+    filter: brightness(1) saturate(1.2);
+  }
+
+  /* Overlay degradado sobre la imagen al hover */
+  .image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 40%,
+      rgba(8, 8, 16, 0.7) 100%
+    );
+    opacity: 0;
+    transition: opacity 400ms ease;
+  }
+
+  .project-card:hover .image-overlay {
+    opacity: 1;
+  }
+
+  /* ---- FALLBACK ---- */
+  .card-image-fallback {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .fallback-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 50%, rgba(255, 107, 0, 0.05), transparent 70%),
+      linear-gradient(135deg, #0e0e1a, #12121f, #0a0a18);
+    transition: opacity 400ms ease;
+  }
+
+  .project-card:hover .fallback-bg {
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 50%, rgba(255, 107, 0, 0.1), transparent 70%),
+      linear-gradient(135deg, #0e0e1a, #12121f, #0a0a18);
+  }
+
+  .fallback-icon {
+    position: relative;
+    z-index: 2;
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    opacity: 0.25;
+    transition: opacity 300ms ease, color 300ms ease, transform 300ms ease, text-shadow 300ms ease;
+  }
+
+  .project-card:hover .fallback-icon {
+    opacity: 0.7;
+    color: var(--orange-core);
+    transform: scale(1.1) rotate(-3deg);
+    text-shadow: 0 0 30px rgba(255, 107, 0, 0.5);
+  }
+
+  /* ---- LIVE INDICATOR ---- */
+  .live-indicator {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: rgba(8, 8, 16, 0.85);
+    border: 1px solid rgba(34, 197, 94, 0.35);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 20px;
+    padding: 0.25rem 0.7rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    z-index: 10;
+    box-shadow: 0 0 12px rgba(34, 197, 94, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    background: #22c55e;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #22c55e;
+    animation: livePulse 1.6s ease-in-out infinite;
+  }
+
+  .live-text {
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #22c55e;
+    letter-spacing: 0.08em;
+  }
+
+  @keyframes livePulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+    50%       { box-shadow: 0 0 0 5px rgba(34, 197, 94, 0); }
+  }
+
+  /* ---- CONTENIDO ---- */
+  .card-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 0;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .card-title {
+    font-size: 1.4rem;
+    color: var(--text-primary);
+    transition: color var(--transition);
+    line-height: 1.2;
+  }
+
+  .project-card:hover .card-title {
+    color: var(--orange-bright);
+    text-shadow: 0 0 20px rgba(255, 140, 0, 0.3);
+  }
+
+  /* Badge de estrellas */
+  .card-stars {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: rgba(255, 107, 0, 0.06);
+    border: 1px solid rgba(255, 107, 0, 0.15);
+    padding: 0.2rem 0.55rem;
+    border-radius: 6px;
+    flex-shrink: 0;
+    transition: background var(--transition), border-color var(--transition), box-shadow var(--transition);
+  }
+
+  .project-card:hover .card-stars {
+    background: rgba(255, 107, 0, 0.12);
+    border-color: rgba(255, 107, 0, 0.35);
+    box-shadow: 0 0 10px rgba(255, 107, 0, 0.1);
+  }
+
+  .star-icon {
+    width: 0.9rem;
+    height: 0.9rem;
+    color: var(--orange-bright);
+    filter: drop-shadow(0 0 3px rgba(255, 140, 0, 0.4));
+  }
+
+  .stars-count {
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .card-description {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.6;
+    transition: color var(--transition);
+  }
+
+  .project-card:hover .card-description {
+    color: #b8b8cc;
+  }
+
+  /* ---- FOOTER ---- */
+  .card-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .tech-tag {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 0.18rem 0.55rem;
+    border-radius: 5px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition:
+      border-color var(--transition),
+      color var(--transition),
+      background var(--transition),
+      box-shadow var(--transition);
+  }
+
+  .project-card:hover .tech-tag {
+    border-color: rgba(255, 107, 0, 0.25);
+    color: var(--text-secondary);
+    background: rgba(255, 107, 0, 0.05);
+  }
+
+  .tech-tag:hover {
+    border-color: rgba(255, 107, 0, 0.5) !important;
+    color: var(--orange-bright) !important;
+    box-shadow: 0 0 8px rgba(255, 107, 0, 0.15) !important;
+  }
+
+  .read-more-text {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--orange-core);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: color var(--transition), text-shadow var(--transition);
+  }
+
+  .project-card:hover .read-more-text {
+    color: var(--orange-glow);
+    text-shadow: 0 0 12px rgba(255, 165, 0, 0.4);
+  }
+
+  .arrow {
+    display: inline-block;
+    transition: transform var(--transition-bounce);
+  }
+
+  .project-card:hover .arrow {
+    transform: translateX(6px);
+  }
+</style>

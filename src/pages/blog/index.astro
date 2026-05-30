@@ -1,0 +1,209 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import { getCollection } from 'astro:content';
+
+// Obtener y ordenar entradas por fecha descendente
+const posts = await getCollection('blog');
+const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout 
+  title="Blog | antperdev"
+  description="Artículos técnicos, tutoriales y reflexiones de desarrollo de software por antperdev."
+>
+  <section class="blog-section dot-grid" aria-labelledby="blog-heading">
+    <!-- Orbes de luz atmosféricos en el fondo -->
+    <div class="blog-orb blog-orb--violet" aria-hidden="true"></div>
+    <div class="blog-orb blog-orb--orange" aria-hidden="true"></div>
+
+    <div class="section-container">
+      <div class="section-header animate-fade-in">
+        <span class="section-eyebrow" aria-hidden="true">◆ APRENDIZAJE & COMPARTIR ◆</span>
+        
+        <h1 id="blog-heading" class="section-title">
+          Mi <span class="title-accent">Blog Personal</span>
+        </h1>
+        
+        <p class="section-subtitle">
+          Comparto tutoriales, guías prácticas y trucos rápidos de NodeJS, Docker, TypeScript y bases de datos.
+        </p>
+
+        <!-- Línea decorativa -->
+        <div class="title-line" aria-hidden="true">
+          <span class="line-dot"></span>
+          <span class="line-body"></span>
+          <span class="line-dot"></span>
+        </div>
+      </div>
+
+      {sortedPosts.length === 0 ? (
+        <div class="no-posts">
+          <p>No se encontraron entradas de blog en este momento. ¡Vuelve pronto!</p>
+        </div>
+      ) : (
+        <div class="blog-grid">
+          {sortedPosts.map((post, index) => (
+            <BlogCard
+              title={post.data.title}
+              description={post.data.description}
+              date={post.data.date}
+              tags={post.data.tags}
+              slug={post.slug}
+              classDelay={`delay-${(index % 6) + 1}`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ============================================================
+     SECCIÓN DE BLOG
+     ============================================================ */
+  .blog-section {
+    position: relative;
+    padding: 7rem 1.5rem 8rem;
+    min-height: 85vh;
+    overflow: hidden;
+  }
+
+  /* Orbes atmosféricos */
+  .blog-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .blog-orb--violet {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(124, 58, 237, 0.08), transparent 70%);
+    top: -100px;
+    right: -100px;
+    animation: floatOrb 10s ease-in-out infinite;
+  }
+
+  .blog-orb--orange {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255, 107, 0, 0.06), transparent 70%);
+    bottom: -150px;
+    left: -150px;
+    animation: floatOrb 12s ease-in-out infinite reverse 2s;
+  }
+
+  @keyframes floatOrb {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50%       { transform: translate(30px, -30px) scale(1.1); }
+  }
+
+  .section-container {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 4.5rem;
+  }
+
+  .section-header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-eyebrow {
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--orange-core);
+    opacity: 0.8;
+  }
+
+  .section-title {
+    font-size: clamp(2.5rem, 6vw, 3.8rem);
+    color: var(--text-primary);
+    line-height: 1.05;
+  }
+
+  .title-accent {
+    background: linear-gradient(135deg, var(--orange-core), var(--accent-violet));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 25px rgba(255, 107, 0, 0.35));
+  }
+
+  .section-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 580px;
+  }
+
+  /* Línea decorativa */
+  .title-line {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.25rem;
+  }
+
+  .line-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--orange-core);
+    box-shadow: 0 0 8px rgba(255, 107, 0, 0.7);
+  }
+
+  .line-body {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(to right, var(--orange-dim), var(--accent-violet));
+    border-radius: 1px;
+  }
+
+  /* ---- GRIDA ---- */
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+  }
+
+  .no-posts {
+    text-align: center;
+    padding: 5rem 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px dashed rgba(255, 107, 0, 0.2);
+    border-radius: 16px;
+    color: var(--text-secondary);
+    backdrop-filter: blur(8px);
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 768px) {
+    .blog-section {
+      padding: 5rem 1.5rem 6rem;
+    }
+
+    .blog-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

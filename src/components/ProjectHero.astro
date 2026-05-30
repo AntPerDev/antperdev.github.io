@@ -1,0 +1,352 @@
+---
+import LiveButton from './LiveButton.astro';
+import { getLiveLink } from '../utils/github';
+
+interface Props {
+  title: string;
+  description: string;
+  repo: string;
+  live: string;
+  tech: string[];
+  stars: number;
+  slug: string;
+}
+
+const { title, description, repo, live, tech, stars, slug } = Astro.props;
+
+// Resolver el enlace live en build-time con sanitización estricta
+const resolvedLive = await getLiveLink(live, repo, slug);
+---
+
+<section class="project-hero">
+
+  <!-- Orbes de fondo -->
+  <div class="phero-orb phero-orb--main" aria-hidden="true"></div>
+  <div class="phero-orb phero-orb--secondary" aria-hidden="true"></div>
+
+  <!-- Malla decorativa (heredada de global) -->
+  <div class="phero-grid-overlay" aria-hidden="true"></div>
+
+  <div class="hero-container">
+
+    <!-- Enlace de retorno con animación -->
+    <a href="/" class="back-link" id="project-back-link" aria-label="Volver a la página principal">
+      <span class="back-icon" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+          <path d="M19 12H5M12 5l-7 7 7 7"/>
+        </svg>
+      </span>
+      VOLVER AL INICIO
+    </a>
+
+    <!-- Número decorativo de proyecto -->
+    <span class="project-number" aria-hidden="true">PROYECTO</span>
+
+    <!-- Título del proyecto con degradado -->
+    <h1 class="project-title">{title}</h1>
+
+    <!-- Barra separadora animada -->
+    <div class="title-separator" aria-hidden="true">
+      <span class="separator-line"></span>
+      <span class="separator-diamond" aria-hidden="true">◆</span>
+      <span class="separator-line"></span>
+    </div>
+
+    <p class="project-description">{description}</p>
+
+    <!-- Meta row: tags + estrellas -->
+    <div class="project-meta-row">
+      <div class="tech-tags" aria-label="Tecnologías utilizadas">
+        {tech.map((t) => (
+          <span class="tech-tag">{t}</span>
+        ))}
+      </div>
+
+      <div class="github-stars-badge" title={`${stars} estrellas en GitHub`} aria-label={`${stars} estrellas en GitHub`}>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="star-icon" aria-hidden="true">
+          <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/>
+        </svg>
+        <span class="stars-text">{stars} STARS</span>
+      </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="action-buttons">
+      {resolvedLive && (
+        <LiveButton href={resolvedLive} variant="primary" text="VER EN VIVO" id="btn-live-hero" />
+      )}
+      <LiveButton href={repo} variant="secondary" text="CÓDIGO EN GITHUB" id="btn-repo-hero" />
+    </div>
+  </div>
+
+  <!-- Divisor inferior con gradiente -->
+  <div class="hero-bottom-line" aria-hidden="true"></div>
+</section>
+
+<style>
+  .project-hero {
+    position: relative;
+    padding: 5.5rem 1.5rem 4.5rem;
+    background: linear-gradient(180deg, rgba(14, 14, 26, 0.95) 0%, rgba(8, 8, 16, 0.8) 100%);
+    border-bottom: 1px solid rgba(255, 107, 0, 0.12);
+    overflow: hidden;
+  }
+
+  /* Orbes de fondo */
+  .phero-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .phero-orb--main {
+    width: 700px;
+    height: 500px;
+    background: radial-gradient(ellipse, rgba(255, 107, 0, 0.08) 0%, transparent 70%);
+    top: -150px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: heroOrbFloat 10s ease-in-out infinite;
+  }
+
+  .phero-orb--secondary {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(124, 58, 237, 0.05) 0%, transparent 70%);
+    bottom: -100px;
+    right: 0;
+    animation: heroOrbFloat 13s ease-in-out infinite reverse 2s;
+  }
+
+  @keyframes heroOrbFloat {
+    0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.8; }
+    50%       { transform: translateX(-50%) scale(1.1); opacity: 1; }
+  }
+
+  /* Overlay de malla de fondo */
+  .phero-grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 107, 0, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 107, 0, 0.025) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+    z-index: 0;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.1));
+  }
+
+  .hero-container {
+    position: relative;
+    max-width: 920px;
+    margin: 0 auto;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* ---- BACK LINK ---- */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 2rem;
+    transition: color var(--transition), gap var(--transition-bounce);
+    width: fit-content;
+  }
+
+  .back-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+    transition: border-color var(--transition), background var(--transition), transform var(--transition-bounce);
+    flex-shrink: 0;
+  }
+
+  .back-link:hover {
+    color: var(--orange-core);
+    gap: 0.75rem;
+  }
+
+  .back-link:hover .back-icon {
+    border-color: rgba(255, 107, 0, 0.4);
+    background: rgba(255, 107, 0, 0.08);
+    transform: translateX(-3px);
+  }
+
+  /* ---- NÚMERO DECORATIVO ---- */
+  .project-number {
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    color: var(--orange-core);
+    opacity: 0.6;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  /* ---- TÍTULO ---- */
+  .project-title {
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    margin-bottom: 1.25rem;
+    background: linear-gradient(135deg, #ffffff 40%, var(--orange-bright) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 30px rgba(255, 107, 0, 0.15));
+    line-height: 1.05;
+  }
+
+  /* ---- SEPARADOR ---- */
+  .title-separator {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .separator-line {
+    flex: 1;
+    max-width: 80px;
+    height: 1px;
+    background: linear-gradient(to right, rgba(255, 107, 0, 0.5), rgba(255, 107, 0, 0.1));
+    border-radius: 1px;
+  }
+
+  .separator-line:last-child {
+    background: linear-gradient(to left, rgba(255, 107, 0, 0.5), rgba(255, 107, 0, 0.1));
+  }
+
+  .separator-diamond {
+    font-size: 0.6rem;
+    color: var(--orange-core);
+    animation: glowPulse 2s ease-in-out infinite;
+    filter: drop-shadow(0 0 4px rgba(255, 107, 0, 0.6));
+  }
+
+  /* ---- DESCRIPCIÓN ---- */
+  .project-description {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    max-width: 800px;
+  }
+
+  /* ---- META ROW ---- */
+  .project-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 2.75rem;
+  }
+
+  .tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tech-tag {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--orange-bright);
+    background: rgba(255, 107, 0, 0.08);
+    border: 1px solid rgba(255, 107, 0, 0.2);
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    letter-spacing: 0.04em;
+    transition: background var(--transition), border-color var(--transition), box-shadow var(--transition), transform var(--transition-bounce);
+  }
+
+  .tech-tag:hover {
+    background: rgba(255, 107, 0, 0.15);
+    border-color: rgba(255, 107, 0, 0.5);
+    box-shadow: 0 0 14px rgba(255, 107, 0, 0.2);
+    transform: translateY(-1px);
+  }
+
+  .github-stars-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.3rem 0.85rem;
+    border-radius: 6px;
+    transition: background var(--transition), border-color var(--transition), box-shadow var(--transition);
+  }
+
+  .github-stars-badge:hover {
+    background: rgba(255, 107, 0, 0.06);
+    border-color: rgba(255, 107, 0, 0.2);
+    box-shadow: 0 0 12px rgba(255, 107, 0, 0.08);
+  }
+
+  .star-icon {
+    width: 1.1rem;
+    height: 1.1rem;
+    color: var(--orange-glow);
+    filter: drop-shadow(0 0 4px rgba(255, 165, 0, 0.5));
+  }
+
+  .stars-text {
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 0.05em;
+  }
+
+  /* ---- ACTION BUTTONS ---- */
+  .action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  /* ---- DIVISOR INFERIOR ---- */
+  .hero-bottom-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent 0%, rgba(255, 107, 0, 0.35) 30%, rgba(255, 107, 0, 0.5) 50%, rgba(255, 107, 0, 0.35) 70%, transparent 100%);
+  }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 640px) {
+    .project-title {
+      font-size: 2.4rem;
+    }
+    .project-description {
+      font-size: 1.05rem;
+    }
+    .action-buttons {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .action-buttons > :global(a) {
+      width: 100%;
+      text-align: center;
+      justify-content: center;
+    }
+  }
+</style>

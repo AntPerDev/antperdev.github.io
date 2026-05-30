@@ -1,0 +1,133 @@
+---
+interface Props {
+  href: string | null | undefined;
+  variant?: 'primary' | 'secondary';
+  text?: string;
+  id?: string;
+}
+
+const { href, variant = 'primary', text, id } = Astro.props;
+
+// Si no hay URL, no renderizar nada para mantener la limpieza semántica
+if (!href) return null;
+
+// Títulos/textos predeterminados según la variante
+const defaultText = variant === 'primary' ? 'VER EN VIVO' : 'CÓDIGO FUENTE';
+const displayText = text || defaultText;
+---
+<a
+  href={href}
+  target="_blank"
+  rel="noopener noreferrer"
+  class={`live-btn-link ${variant}`}
+  id={id}
+  aria-label={`${displayText} (abre en nueva pestaña)`}
+>
+  <span class="live-btn-content">
+    {variant === 'primary' ? (
+      // Icono de Rayo inline para primario
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="btn-icon" aria-hidden="true">
+        <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+      </svg>
+    ) : (
+      // Icono de GitHub inline para secundario
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="btn-icon" aria-hidden="true">
+        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+      </svg>
+    )}
+    
+    <span class="btn-text">{displayText}</span>
+    
+    {variant === 'primary' && (
+      <span class="btn-arrow">→</span>
+    )}
+  </span>
+</a>
+
+<style>
+  .live-btn-link {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 6px;
+    position: relative;
+    transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease, background-color 200ms ease;
+    overflow: hidden;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .live-btn-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1.75rem;
+    width: 100%;
+    height: 100%;
+  }
+
+  .btn-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  .btn-arrow {
+    font-size: 1.2rem;
+    transition: transform 200ms ease;
+  }
+
+  /* --- VARIANTE PRIMARIA --- */
+  .live-btn-link.primary {
+    background: linear-gradient(135deg, var(--orange-core), var(--orange-bright));
+    color: var(--text-primary);
+    border: 1px solid var(--orange-bright);
+    
+    /* Brillo interno sofisticado */
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 
+                0 4px 12px rgba(255, 107, 0, 0.2);
+  }
+
+  .live-btn-link.primary:hover {
+    transform: scale(1.05);
+    /* Glow naranja intenso */
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35),
+                0 0 25px var(--orange-glow),
+                0 6px 20px rgba(255, 107, 0, 0.4);
+  }
+
+  .live-btn-link.primary:hover .btn-arrow {
+    transform: translateX(4px);
+  }
+
+  .live-btn-link.primary:active {
+    transform: scale(0.98);
+  }
+
+  /* --- VARIANTE SECUNDARIA --- */
+  .live-btn-link.secondary {
+    background-color: transparent;
+    color: var(--orange-core);
+    border: 2px solid var(--border);
+  }
+
+  .live-btn-link.secondary .live-btn-content {
+    padding: 0.75rem 1.5rem; /* Ajuste por el grosor del borde */
+    font-size: 1rem;
+  }
+
+  .live-btn-link.secondary:hover {
+    border-color: var(--orange-core);
+    color: var(--orange-bright);
+    background-color: rgba(255, 107, 0, 0.05);
+    transform: scale(1.02);
+  }
+
+  .live-btn-link.secondary:active {
+    transform: scale(0.98);
+  }
+</style>

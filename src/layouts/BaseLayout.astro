@@ -1,0 +1,91 @@
+---
+import Header from '../components/Header.astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const {
+  title = "antperdev | Portfolio Profesional",
+  description = "Portfolio profesional de antperdev, desarrollador de software especializado en aplicaciones robustas, código limpio e interfaces premium.",
+  image = "/images/default-og.png"
+} = Astro.props;
+
+// Sanitizar cadenas para meta tags evitando inyecciones de HTML/XSS en el build
+const sanitizeMeta = (str: string) => {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+};
+
+const safeTitle = sanitizeMeta(title);
+const safeDescription = sanitizeMeta(description);
+const safeImage = sanitizeMeta(image);
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="generator" content={Astro.generator} />
+  
+  <!-- SEO Básico -->
+  <title>{safeTitle}</title>
+  <meta name="description" content={safeDescription} />
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={safeTitle} />
+  <meta property="og:description" content={safeDescription} />
+  <meta property="og:image" content={safeImage} />
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:title" content={safeTitle} />
+  <meta property="twitter:description" content={safeDescription} />
+  <meta property="twitter:image" content={safeImage} />
+</head>
+<body>
+  <Header />
+  
+  <main class="main-content" id="main-content">
+    <slot />
+  </main>
+  
+  <footer class="footer">
+    <div class="footer-container">
+      <p>&copy; {new Date().getFullYear()} antperdev. Hecho con Astro y Código Limpio.</p>
+    </div>
+  </footer>
+</body>
+</html>
+
+<style>
+  .main-content {
+    flex-grow: 1;
+    width: 100%;
+  }
+  
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 1rem;
+    background-color: var(--bg-secondary);
+    margin-top: 6rem;
+  }
+  
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-family: var(--font-body);
+  }
+</style>
