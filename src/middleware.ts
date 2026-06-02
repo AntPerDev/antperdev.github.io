@@ -1,10 +1,14 @@
 import type { AstroGlobal } from 'astro';
 
-export async function onRequest(_context: AstroGlobal, next: () => Promise<Response>): Promise<Response> {
+/**
+ * Astro middleware to set security-related HTTP headers.
+ * Calls the next handler to obtain a Response, then augments it.
+ */
+export async function onRequest(context: AstroGlobal, next: () => Promise<Response>): Promise<Response> {
   // Execute downstream middleware / page rendering and obtain the response.
   const response = await next();
 
-  // Content Security Policy – adjust sources as needed for your assets.
+  // Content Security Policy – adjust sources as needed.
   const csp = [
     "default-src 'self'",
     "script-src 'self'",
