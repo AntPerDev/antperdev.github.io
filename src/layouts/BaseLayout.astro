@@ -29,5 +29,39 @@ const safeDescription = sanitizeMeta(description);
 const safeImage = sanitizeMeta(image);
 ---
 
-<!doctype html>
-<html lang="es"></html>
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="generator" content={Astro.generator} />
+  <title>{safeTitle}</title>
+  <meta name="description" content={safeDescription} />
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={safeTitle} />
+  <meta property="og:description" content={safeDescription} />
+  <meta property="og:image" content={safeImage} />
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:title" content={safeTitle} />
+  <meta property="twitter:description" content={safeDescription} />
+  <meta property="twitter:image" content={safeImage} />
+  <link rel="stylesheet" href="/_astro/_slug_.DzAT8xpA.css" />
+  <link rel="stylesheet" href="/_astro/index.CHvh0Ae3.css" />
+</head>
+<body>
+  <Header />
+  <main class="main-content" id="main-content">
+    <slot />
+  </main>
+  <footer class="footer">
+    <div class="footer-container">
+      <p>&copy; {new Date().getFullYear()} antperdev. Hecho con Astro y Código Limpio.</p>
+    </div>
+  </footer>
+</body>
+</html>
+---
