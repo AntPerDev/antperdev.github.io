@@ -1,11 +1,9 @@
 import type { AstroGlobal } from 'astro';
 
-/**
- * Middleware that adds a set of security‑related HTTP headers to every response.
- * All headers comply with the `secure‑clean‑code` policy (no sensitive data in URLs,
- * sanitization, hardening against XSS, CSRF, etc.).
- */
-export async function handle({ request, response }: AstroGlobal) {
+export async function onRequest(_context: AstroGlobal, next: () => Promise<Response>): Promise<Response> {
+  // Execute downstream middleware / page rendering and obtain the response.
+  const response = await next();
+
   // Content Security Policy – adjust sources as needed for your assets.
   const csp = [
     "default-src 'self'",
@@ -26,6 +24,5 @@ export async function handle({ request, response }: AstroGlobal) {
   response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
   response.headers.set('X-XSS-Protection', '1; mode=block');
 
-  // Let Astro continue processing the request.
   return response;
 }
