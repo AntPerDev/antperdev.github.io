@@ -1,10 +1,10 @@
-import type { AstroGlobal } from 'astro';
+import { defineMiddleware } from 'astro:middleware';
 
 /**
  * Astro middleware to set security-related HTTP headers.
  * Calls the next handler to obtain a Response, then augments it.
  */
-export async function onRequest(context: AstroGlobal, next: () => Promise<Response>): Promise<Response> {
+export const onRequest = defineMiddleware(async (context, next) => {
   // Execute downstream middleware / page rendering and obtain the response.
   const response = await next();
 
@@ -29,4 +29,4 @@ export async function onRequest(context: AstroGlobal, next: () => Promise<Respon
   response.headers.set('X-XSS-Protection', '1; mode=block');
 
   return response;
-}
+});

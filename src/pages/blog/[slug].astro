@@ -7,20 +7,21 @@ export async function getStaticPaths() {
   const posts = await getCollection('blog');
   // Ordenar por fecha descendente
   const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-  
+
   return sortedPosts.map((post, index) => {
     const prev = index < sortedPosts.length - 1 ? sortedPosts[index + 1] : null;
     const next = index > 0 ? sortedPosts[index - 1] : null;
-    
+
     return {
-      params: { slug: post.slug },
+      params: { slug: post.id },
       props: { post, prev, next },
     };
   });
 }
 
 const { post, prev, next } = Astro.props;
-const { Content } = await post.render();
+const renderContent = post.rendered;
+const Content = renderContent ? (renderContent as any).Content : null;
 
 // Formatear la fecha en español de forma elegante
 const formattedDate = post.data.date.toLocaleDateString('es-ES', {
@@ -30,7 +31,7 @@ const formattedDate = post.data.date.toLocaleDateString('es-ES', {
 });
 ---
 
-<BaseLayout 
+<BaseLayout
   title={`${post.data.title} | Blog antperdev`}
   description={post.data.description}
   image={post.data.cover}
@@ -85,16 +86,16 @@ const formattedDate = post.data.date.toLocaleDateString('es-ES', {
         ))}
       </div>
     </div>
-    
+
     <div class="hero-bottom-line" aria-hidden="true"></div>
   </section>
 
   <div class="blog-detail-body">
     <div class="detail-container">
-      
+
       <!-- Contenido renderizado con clase prose del diseño global -->
       <article class="prose-content prose" id="blog-markdown-content">
-        <Content />
+        {Content && <Content />}
       </article>
 
       <hr class="separator" />
@@ -103,16 +104,16 @@ const formattedDate = post.data.date.toLocaleDateString('es-ES', {
       <nav class="post-navigation" aria-label="Navegación del blog">
         <div class="nav-item prev-item">
           {prev && (
-            <a href={`/blog/${prev.slug}`} class="nav-nav-link prev" aria-label={`Ir al artículo anterior: ${prev.data.title}`}>
+            <a href={`/blog/${prev.id}`} class="nav-nav-link prev" aria-label={`Ir al artículo anterior: ${prev.data.title}`}>
               <span class="nav-meta">← POST ANTERIOR</span>
               <span class="nav-title">{prev.data.title}</span>
             </a>
           )}
         </div>
-        
+
         <div class="nav-item next-item">
           {next && (
-            <a href={`/blog/${next.slug}`} class="nav-nav-link next" aria-label={`Ir al artículo siguiente: ${next.data.title}`}>
+            <a href={`/blog/${next.id}`} class="nav-nav-link next" aria-label={`Ir al artículo siguiente: ${next.data.title}`}>
               <span class="nav-meta">POST SIGUIENTE →</span>
               <span class="nav-title">{next.data.title}</span>
             </a>
@@ -438,7 +439,7 @@ const formattedDate = post.data.date.toLocaleDateString('es-ES', {
       grid-template-columns: 1fr;
       gap: 1.25rem;
     }
-    
+
     .nav-item.next-item {
       align-items: flex-start;
       text-align: left;

@@ -16,14 +16,15 @@ export async function getStaticPaths() {
     const next = index > 0 ? sortedProjects[index - 1] : null;
     
     return {
-      params: { slug: project.slug },
+      params: { slug: project.id },
       props: { project, prev, next },
     };
   });
 }
 
 const { project, prev, next } = Astro.props;
-const { Content } = await project.render();
+const renderContent = project.rendered;
+const Content = renderContent ? (renderContent as any).Content : null;
 ---
 
 <BaseLayout 
@@ -39,7 +40,7 @@ const { Content } = await project.render();
     live={project.data.live}
     tech={project.data.tech}
     stars={project.data.stars}
-    slug={project.slug}
+    slug={project.id}
   />
 
   <div class="project-detail-body">
@@ -58,7 +59,7 @@ const { Content } = await project.render();
 
       <!-- Contenido Markdown renderizado con tipografía premium (.prose) -->
       <article class="prose-content prose" id="project-markdown-content">
-        <Content />
+        {Content && <Content />}
       </article>
 
       <hr class="separator" />
@@ -67,7 +68,7 @@ const { Content } = await project.render();
       <nav class="project-navigation" aria-label="Navegación de proyectos">
         <div class="nav-item prev-item">
           {prev && (
-            <a href={`/projects/${prev.slug}`} class="nav-nav-link prev" aria-label={`Ir al proyecto anterior: ${prev.data.title}`}>
+            <a href={`/projects/${prev.id}`} class="nav-nav-link prev" aria-label={`Ir al proyecto anterior: ${prev.data.title}`}>
               <span class="nav-meta">← PROYECTO ANTERIOR</span>
               <span class="nav-title">{prev.data.title}</span>
             </a>
@@ -76,7 +77,7 @@ const { Content } = await project.render();
         
         <div class="nav-item next-item">
           {next && (
-            <a href={`/projects/${next.slug}`} class="nav-nav-link next" aria-label={`Ir al proyecto siguiente: ${next.data.title}`}>
+            <a href={`/projects/${next.id}`} class="nav-nav-link next" aria-label={`Ir al proyecto siguiente: ${next.data.title}`}>
               <span class="nav-meta">PROYECTO SIGUIENTE →</span>
               <span class="nav-title">{next.data.title}</span>
             </a>

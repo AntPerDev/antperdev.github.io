@@ -8,7 +8,7 @@ const posts = await getCollection('blog');
 const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
-<BaseLayout 
+<BaseLayout
   title="Blog | antperdev"
   description="Artículos técnicos, tutoriales y reflexiones de desarrollo de software por antperdev."
 >
@@ -20,11 +20,11 @@ const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.get
     <div class="section-container">
       <div class="section-header animate-fade-in">
         <span class="section-eyebrow" aria-hidden="true">◆ APRENDIZAJE & COMPARTIR ◆</span>
-        
+
         <h1 id="blog-heading" class="section-title">
           Mi <span class="title-accent">Blog Personal</span>
         </h1>
-        
+
         <p class="section-subtitle">
           Comparto tutoriales, guías prácticas y trucos rápidos de NodeJS, Docker, TypeScript y bases de datos.
         </p>
@@ -49,7 +49,7 @@ const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.get
               description={post.data.description}
               date={post.data.date}
               tags={post.data.tags}
-              slug={post.slug}
+              slug={post.id}
               classDelay={`delay-${(index % 6) + 1}`}
             />
           ))}

@@ -8,7 +8,7 @@ const projects = await getCollection('projects');
 const sortedProjects = projects.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
-<BaseLayout 
+<BaseLayout
   title="antperdev | Desarrollador de Software & Arquitecto Web"
   description="Portfolio profesional de antperdev, especializado en construir aplicaciones robustas, código limpio, SOLID y seguridad en el frontend."
 >
@@ -68,7 +68,7 @@ const sortedProjects = projects.sort((a, b) => b.data.date.getTime() - a.data.da
           Diseño y desarrollo soluciones web ultrarrápidas, mantenibles y seguras.
           Comprometido con la excelencia técnica, la arquitectura robusta y la
           optimización del lado del cliente. Especializado en ecosistemas basados
-          en TypeScript, Astro y Node.js.
+          en TypeScript, Angular, Astro y Node.js.
         </p>
 
         <!-- Stats rápidas -->
@@ -157,7 +157,7 @@ const sortedProjects = projects.sort((a, b) => b.data.date.getTime() - a.data.da
             <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
           </svg>
           <p>
-  Cada fragmento de código aquí expuesto ha sido tipeado por mí a partir de los ejercicios propuestos por instructores de <strong>Udemy</strong>. Siguiendo el hilo de sus cursos y la guía de mentores excepcionales, en especial <strong>Fernando Herrera</strong>, he convertido sus enseñanzas en código propio, reflejando el aprendizaje adquirido.
+  Cada fragmento de código aquí expuesto ha sido tipeado por mí a partir de los ejercicios propuestos por instructores de <strong>Udemy</strong>. Siguiendo el hilo de sus cursos y la guía de mentores excepcionales, en especial <strong>Fernando Herrera</strong>, he convertido sus enseñanzas en mis propios conocimientos, reflejando el aprendizaje adquirido.
           </p>
         </div>
       </div>
@@ -177,7 +177,7 @@ const sortedProjects = projects.sort((a, b) => b.data.date.getTime() - a.data.da
               tech={project.data.tech}
               stars={project.data.stars}
               cover={project.data.cover}
-              slug={project.slug}
+              slug={project.id}
               classDelay={`delay-${(index % 6) + 1}`}
             />
           ))}
