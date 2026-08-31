@@ -11,11 +11,13 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "paths": {
-      "@components/*": ["src/components/*"],
-      "@layouts/*": ["src/layouts/*"],
-      "@styles/*": ["src/styles/*"],
-      "@utils/*": ["src/utils/*"]
+
     }
+    // Las lineas de abajo estaban en paths
+      //   "@components/*": ["src/components/*"],
+      // "@layouts/*": ["src/layouts/*"],
+      // "@styles/*": ["src/styles/*"],
+      // "@utils/*": ["src/utils/*"]
   },
   "include": [".astro/types.d.ts", "**/*"],
   "exclude": ["dist"]
