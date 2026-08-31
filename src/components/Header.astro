@@ -5,33 +5,47 @@
   <div class="scroll-progress" id="scroll-progress-bar" aria-hidden="true"></div>
 
   <div class="header-container">
-    <a href="/" class="logo" id="header-logo" aria-label="Ir al inicio de antperdev">
-      <span class="logo-bracket">&lt;</span>
-      <span class="logo-name">antperdev</span>
-      <span class="logo-bracket"> /&gt;</span>
+  <a href="/" class="logo" id="header-logo" aria-label="Ir al inicio de antperdev">
+    <span class="logo-bracket">&lt;</span>
+    <span class="logo-name">antperdev</span>
+    <span class="logo-bracket"> /&gt;</span>
+  </a>
+
+<button
+  type="button"
+  class="nav-toggle"
+  id="nav-toggle"
+  aria-label="Abrir menú de navegación"
+  aria-expanded="false"
+  aria-controls="primary-nav"
+>
+  <span class="nav-toggle-bar"></span>
+  <span class="nav-toggle-bar"></span>
+  <span class="nav-toggle-bar"></span>
+</button>
+
+  <nav class="nav" id="primary-nav" aria-label="Navegación principal">
+    <a href="/" class="nav-link" id="nav-inicio">Inicio</a>
+    <a href="/#proyectos" class="nav-link" id="nav-proyectos">Proyectos</a>
+    <a href="https://antperdev.github.io/cv" class="nav-link" id="nav-cv">Curriculum Vitae</a>
+    <a href="/blog" class="nav-link" id="nav-blog">Blog</a>
+    <a
+      href="https://github.com/antperdev"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="nav-link nav-github"
+      id="nav-github"
+      aria-label="Perfil de GitHub (abre en nueva pestaña)"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="github-icon" aria-hidden="true">
+        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+      </svg>
+      GitHub
     </a>
-    
-    <nav class="nav" aria-label="Navegación principal">
-      <a href="/" class="nav-link" id="nav-inicio">Inicio</a>
-      <a href="/#proyectos" class="nav-link" id="nav-proyectos">Proyectos</a>
-      <a href="https://antperdev.github.io/cv" class="nav-link" id="nav-proyectos">Curriculum Vitae</a>
-      <a href="/blog" class="nav-link" id="nav-blog">Blog</a>
-      <a 
-        href="https://github.com/antperdev" 
-        target="_blank" 
-        rel="noopener noreferrer" 
-        class="nav-link nav-github"
-        id="nav-github"
-        aria-label="Perfil de GitHub (abre en nueva pestaña)"
-      >
-        <!-- Icono GitHub SVG -->
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="github-icon" aria-hidden="true">
-          <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-        </svg>
-        GitHub
-      </a>
-    </nav>
-  </div>
+  </nav>
+</div>
+
+
 </header>
 
 <script>
@@ -59,13 +73,42 @@
   }
 </script>
 
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const nav = document.getElementById('primary-nav');
+
+  if (toggle && nav) {
+    toggle.addEventListener('click', () => {
+      const isOpen = nav.classList.toggle('nav-open');
+      toggle.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    // Cierra el menú al pulsar un enlace
+    nav.querySelectorAll('.nav-link').forEach((link) => {
+      link.addEventListener('click', () => {
+        nav.classList.remove('nav-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Cierra el menú si se pasa a vista de escritorio
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 769) {
+        nav.classList.remove('nav-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+</script>
+
+
 <style>
   .header {
     position: sticky;
     top: 0;
     z-index: 200;
     width: 100%;
-    /* Glassmorphism base */
     background: rgba(8, 8, 16, 0.6);
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
@@ -73,7 +116,6 @@
     height: 68px;
     display: flex;
     align-items: center;
-    /* Brillo difuso superior */
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04),
                 0 4px 30px rgba(0, 0, 0, 0.4);
     transition: background var(--transition), box-shadow var(--transition);
@@ -86,7 +128,6 @@
                 0 0 60px rgba(255, 107, 0, 0.03);
   }
 
-  /* Línea decorativa inferior naranja difuminada */
   .header::after {
     content: '';
     position: absolute;
@@ -98,7 +139,6 @@
     pointer-events: none;
   }
 
-  /* Barra de progreso de scroll */
   .scroll-progress {
     position: absolute;
     bottom: 0;
@@ -110,7 +150,7 @@
     transition: width 80ms linear;
     z-index: 10;
   }
-  
+
   .header-container {
     width: 100%;
     max-width: 1200px;
@@ -119,9 +159,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative; /* referencia para el dropdown en móvil */
   }
-  
-  /* ---- LOGO ---- */
+
+  /* ---- LOGO (sin cambios) ---- */
   .logo {
     font-family: var(--font-display);
     font-size: 1.7rem;
@@ -159,22 +200,94 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  
-  /* ---- NAV ---- */
+
+  /* ---- NAV TOGGLE (solo móvil) ---- */
+.nav-toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid rgba(255, 107, 0, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.nav-toggle:hover,
+.nav-toggle[aria-expanded="true"] {
+  background: rgba(255, 107, 0, 0.12);
+  border-color: rgba(255, 107, 0, 0.5);
+}
+
+.nav-toggle-bar {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: var(--orange-core);
+  border-radius: 1px;
+  transition: transform var(--transition), opacity var(--transition), background var(--transition);
+}
+
+.nav-toggle:hover .nav-toggle-bar {
+  background: var(--text-primary);
+}
+
+/* Animación a X cuando el menú está abierto */
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+  /* ---- NAV: base MÓVIL (menú desplegable colapsado) ---- */
   .nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 150;
     display: flex;
-    align-items: center;
-    gap: 0.25rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: rgba(8, 8, 16, 0.96);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 107, 0, 0.12);
+    padding: 0.5rem;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: max-height var(--transition), opacity var(--transition);
   }
-  
+
+  .nav.nav-open {
+    max-height: 500px;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
   .nav-link {
     font-family: var(--font-body);
     font-size: 0.9rem;
     font-weight: 500;
     color: var(--text-secondary);
     position: relative;
-    padding: 0.4rem 0.85rem;
+    padding: 0.6rem 0.85rem;
     border-radius: 8px;
+    width: 100%;
     transition: color var(--transition), background var(--transition);
     display: flex;
     align-items: center;
@@ -203,7 +316,7 @@
     transition: transform var(--transition-bounce);
     transform-origin: center;
   }
-  
+
   .nav-link:hover {
     color: var(--text-primary);
     background: rgba(255, 107, 0, 0.07);
@@ -221,7 +334,9 @@
   .nav-github {
     color: var(--orange-core);
     border: 1px solid rgba(255, 107, 0, 0.2);
-    margin-left: 0.5rem;
+    margin-left: 0;
+    margin-top: 0.3rem;
+    justify-content: center;
   }
 
   .nav-github:hover {
@@ -235,17 +350,47 @@
     display: none;
   }
 
-  /* ---- RESPONSIVE ---- */
+  /* ---- DESKTOP: restaura el aspecto ORIGINAL tal cual, sin cambios ---- */
+  @media (min-width: 769px) {
+    .nav-toggle {
+      display: none;
+    }
+
+    .nav {
+      position: static;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.25rem;
+      background: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border-bottom: none;
+      padding: 0;
+      max-height: none;
+      overflow: visible;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .nav-link {
+      width: auto;
+      padding: 0.4rem 0.85rem;
+    }
+
+    .nav-github {
+      margin-left: 0.5rem;
+      margin-top: 0;
+    }
+  }
+
+  /* ---- RESPONSIVE (igual que antes) ---- */
   @media (max-width: 480px) {
     .logo-name {
       display: none;
     }
-    .nav {
-      gap: 0;
-    }
     .nav-link {
       font-size: 0.82rem;
-      padding: 0.4rem 0.6rem;
+      padding: 0.5rem 0.6rem;
     }
   }
 </style>
