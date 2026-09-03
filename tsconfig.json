@@ -4,6 +4,7 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "bundler",
+    "baseUrl": ".",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "strict": true,
@@ -11,13 +12,13 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "paths": {
-
-    }
     // Las lineas de abajo estaban en paths
-      //   "@components/*": ["src/components/*"],
-      // "@layouts/*": ["src/layouts/*"],
-      // "@styles/*": ["src/styles/*"],
-      // "@utils/*": ["src/utils/*"]
+        "@components/*": ["src/components/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@styles/*": ["src/styles/*"],
+      "@utils/*": ["src/utils/*"],
+    }
+
   },
   "include": [".astro/types.d.ts", "**/*"],
   "exclude": ["dist"]
