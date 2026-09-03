@@ -7,6 +7,6 @@ export default defineConfig({
   // Ruta base para que los enlaces se generen en la raíz del dominio
   // base: '/docs',
   // Asegura que los archivos estáticos tengan barra final y se sirvan correctamente
-  base: ".",
-  trailingSlash: "always",
+  // base: ".",
+  // trailingSlash: "always",
 });
