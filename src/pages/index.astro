@@ -65,7 +65,7 @@ const sortedProjects = projects.sort((a, b) => b.data.date.getTime() - a.data.da
         </p>
 
         <p class="hero-bio">
-          Construyo sitios web en los que la gente desde el navegador de su teléfono, su televisor inteligente, su ordenador, puede interactuar, comprar algo, reservar un viaje, buscar una oferta de empleo, o reservar una cita con su médico, entre otras muchas cosas. Creo tanto la parte que se ve en pantalla —los botones, formularios, el diseño web "frontend"— como la parte de detrás que hace que todo funcione (desarrollo backend), como guardar los datos o confirmar una reserva. Mi ocupación se llama desarrollador de aplicaciones web, desarrollador web full-stack. También se puede ver en algunos sitios como Software engineer (versión en inglés, muy usada también en ofertas en español, sobre todo de empresas tech) ó Desarrollador de plataformas web "
+          Construyo sitios web en los que la gente desde el navegador de su teléfono, su televisor inteligente, su ordenador, puede interactuar, comprar algo, reservar un viaje, buscar una oferta de empleo, o reservar una cita con su médico, entre otras muchas cosas. Diseño tanto la parte que se ve en pantalla —los botones, formularios, el diseño web "frontend"— como la parte de detrás que hace que todo funcione (desarrollo backend), como guardar los datos o confirmar una reserva. Mi ocupación se llama desarrollador de aplicaciones web, desarrollador web full-stack. También se puede ver en algunos sitios como Software engineer (versión en inglés, muy usada también en ofertas en español, sobre todo de empresas tech) ó Desarrollador de plataformas web.
         </p>
 
         <!-- Stats rápidas -->
@@ -113,8 +113,8 @@ const sortedProjects = projects.sort((a, b) => b.data.date.getTime() - a.data.da
   </section>
 
   <!-- ============================================================
-       SECCIÓN DE PROYECTOS
-       ============================================================ -->
+    SECCIÓN DE PROYECTOS
+  ============================================================ -->
   <section class="projects-section" id="proyectos" aria-labelledby="projects-heading">
 
     <!-- Orbe decorativa para la sección -->
@@ -145,21 +145,8 @@ const sortedProjects = projects.sort((a, b) => b.data.date.getTime() - a.data.da
         </div>
       </div>
 
-      <!-- Banner Informativo de Cursos y Aprendizaje -->
-      <div class="learning-banner animate-fade-in delay-2">
-        <div class="learning-banner-glow" aria-hidden="true"></div>
-        <div class="learning-banner-content">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="learning-banner-icon" aria-hidden="true">
-            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-            <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
-          </svg>
-          <p>
-  Cada fragmento de código aquí expuesto ha sido tipeado por mí a partir de los ejercicios propuestos por instructores de <strong>Udemy</strong>. Siguiendo el hilo de sus cursos y la guía de mentores excepcionales, en especial <strong>Fernando Herrera</strong>, he convertido sus enseñanzas en mis propios conocimientos, reflejando el aprendizaje adquirido.
-          </p>
-        </div>
-      </div>
 
-      {sortedProjects.length === 0 ? (
+      <!-- {sortedProjects.length === 0 ? (
         <div class="no-projects">
           <p>No se encontraron proyectos. ¡Añade tu primer markdown en <code>src/content/projects/</code>!</p>
         </div>
@@ -179,15 +166,18 @@ const sortedProjects = projects.sort((a, b) => b.data.date.getTime() - a.data.da
             />
           ))}
         </div>
-      )}
+      )} -->
+
+
+
     </div>
   </section>
 </BaseLayout>
 
 <style>
   /* ============================================================
-     HERO
-     ============================================================ */
+    HERO
+ ============================================================ */
   .hero {
     position: relative;
     padding: 8rem 1.5rem 7rem;
