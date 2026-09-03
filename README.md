@@ -94,7 +94,7 @@ src/
    npm run dev
    ```
 
-   El sitio estará disponible en `http://localhost:3000`
+   El sitio estará disponible en `http://localhost:421`
 
 ### Comandos Disponibles
 

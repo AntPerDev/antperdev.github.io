@@ -4,7 +4,7 @@ import { defineMiddleware } from 'astro:middleware';
  * Astro middleware to set security-related HTTP headers.
  * Calls the next handler to obtain a Response, then augments it.
  */
-export const onRequest = defineMiddleware(async (context, next) => {
+export const onRequest = defineMiddleware(async (_context, next) => {
   // Execute downstream middleware / page rendering and obtain the response.
   const response = await next();
 

@@ -8,13 +8,13 @@ export async function getStaticPaths() {
   const projects = await getCollection('projects');
   // Ordenar por fecha cronológica descendente para calcular navegación coherente
   const sortedProjects = projects.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-  
+
   return sortedProjects.map((project, index) => {
     // Siguiente en el array (proyecto anterior cronológicamente)
     const prev = index < sortedProjects.length - 1 ? sortedProjects[index + 1] : null;
     // Anterior en el array (proyecto siguiente cronológicamente)
     const next = index > 0 ? sortedProjects[index - 1] : null;
-    
+
     return {
       params: { slug: project.id },
       props: { project, prev, next },
@@ -27,7 +27,7 @@ const renderContent = project.rendered;
 const Content = renderContent ? (renderContent as any).Content : null;
 ---
 
-<BaseLayout 
+<BaseLayout
   title={`${project.data.title} | antperdev Portfolio`}
   description={project.data.description}
   image={project.data.cover}
@@ -45,13 +45,13 @@ const Content = renderContent ? (renderContent as any).Content : null;
 
   <div class="project-detail-body">
     <div class="detail-container">
-      
+
       <!-- Si hay imagen de portada, mostrarla -->
       {project.data.cover && (
         <div class="cover-image-wrapper">
-          <img 
-            src={project.data.cover} 
-            alt={`Detalles visuales del proyecto ${project.data.title}`} 
+          <img
+            src={project.data.cover}
+            alt={`Detalles visuales del proyecto ${project.data.title}`}
             class="cover-image"
           />
         </div>
@@ -74,7 +74,7 @@ const Content = renderContent ? (renderContent as any).Content : null;
             </a>
           )}
         </div>
-        
+
         <div class="nav-item next-item">
           {next && (
             <a href={`/projects/${next.id}`} class="nav-nav-link next" aria-label={`Ir al proyecto siguiente: ${next.data.title}`}>
@@ -191,12 +191,12 @@ const Content = renderContent ? (renderContent as any).Content : null;
       grid-template-columns: 1fr;
       gap: 1.25rem;
     }
-    
+
     .nav-item.next-item {
       align-items: flex-start;
       text-align: left;
     }
-    
+
     .cover-image-wrapper {
       margin-bottom: 2.5rem;
     }
