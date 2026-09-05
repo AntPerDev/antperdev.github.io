@@ -7,6 +7,8 @@ tech: ["VueJS", "JavaScript", "CSS", "PokeAPI"]
 stars: 0
 featured: true
 date: 2022-08-15
+draft: true
+
 ---
 
 # Adivina el Pokémon Vue Game

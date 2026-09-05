@@ -6,8 +6,16 @@ import { getCollection } from 'astro:content';
 // Generar rutas estáticas estáticamente en build-time
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
-  // Ordenar por fecha cronológica descendente para calcular navegación coherente
-  const sortedProjects = projects.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+  
+  // 1. Filtrar los proyectos para excluir borradores solo en producción
+  const filteredProjects = projects.filter(project => {
+    // Si la propiedad 'draft' es true en el frontmatter, se evalúa. 
+    // Si estás en producción, se oculta; si estás en desarrollo, se muestra.
+    return import.meta.env.PROD ? !project.data.draft : true;
+  });
+
+  // 2. Ordenar por fecha cronológica descendente utilizando la lista ya filtrada
+  const sortedProjects = filteredProjects.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
   return sortedProjects.map((project, index) => {
     // Siguiente en el array (proyecto anterior cronológicamente)

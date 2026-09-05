@@ -7,6 +7,8 @@ tech: ["Qwik", "TypeScript", "PokéAPI", "CSS"]
 stars: 0
 featured: true
 date: 2025-07-25
+draft: true
+
 ---
 
 # Poke-Qwik — Pokédex con Qwik

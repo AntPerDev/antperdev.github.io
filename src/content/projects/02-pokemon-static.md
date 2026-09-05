@@ -7,6 +7,7 @@ tech: ["Astro", "TypeScript", "PokéAPI", "CSS"]
 stars: 0
 featured: true
 date: 2026-04-03
+draft: true
 ---
 
 # Pokemon Static — Astro SSG

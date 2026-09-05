@@ -7,6 +7,8 @@ tech: ["Angular", "TypeScript", "REST Countries API", "RxJS"]
 stars: 0
 featured: true
 date: 2025-08-25
+draft: true
+
 ---
 
 # Country App — Angular REST

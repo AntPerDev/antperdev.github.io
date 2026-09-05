@@ -1,11 +1,13 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import BlogCard from '../../components/BlogCard.astro';
-import { getCollection } from 'astro:content';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import BlogCard from "../../components/BlogCard.astro";
+import { getCollection } from "astro:content";
 
 // Obtener y ordenar entradas por fecha descendente
-const posts = await getCollection('blog');
-const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const posts = await getCollection("blog");
+const sortedPosts = posts.sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
 ---
 
 <BaseLayout
@@ -19,14 +21,17 @@ const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.get
 
     <div class="section-container">
       <div class="section-header animate-fade-in">
-        <span class="section-eyebrow" aria-hidden="true">◆ APRENDIZAJE & COMPARTIR ◆</span>
+        <span class="section-eyebrow" aria-hidden="true"
+          >◆ APRENDIZAJE & COMPARTIR ◆</span
+        >
 
         <h1 id="blog-heading" class="section-title">
-          Mi <span class="title-accent">Blog Personal</span>
+          <span class="title-accent">Blog</span>
         </h1>
 
         <p class="section-subtitle">
-          Comparto tutoriales, guías prácticas y trucos rápidos de NodeJS, Docker, TypeScript y bases de datos.
+          Comparto tutoriales, guías prácticas y trucos rápidos de NodeJS,
+          Docker, TypeScript y bases de datos.
         </p>
 
         <!-- Línea decorativa -->
@@ -37,24 +42,29 @@ const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.get
         </div>
       </div>
 
-      {sortedPosts.length === 0 ? (
-        <div class="no-posts">
-          <p>No se encontraron entradas de blog en este momento. ¡Vuelve pronto!</p>
-        </div>
-      ) : (
-        <div class="blog-grid">
-          {sortedPosts.map((post, index) => (
-            <BlogCard
-              title={post.data.title}
-              description={post.data.description}
-              date={post.data.date}
-              tags={post.data.tags}
-              slug={post.id}
-              classDelay={`delay-${(index % 6) + 1}`}
-            />
-          ))}
-        </div>
-      )}
+      {
+        sortedPosts.length === 0 ? (
+          <div class="no-posts">
+            <p>
+              No se encontraron entradas de blog en este momento. ¡Vuelve
+              pronto!
+            </p>
+          </div>
+        ) : (
+          <div class="blog-grid">
+            {sortedPosts.map((post, index) => (
+              <BlogCard
+                title={post.data.title}
+                description={post.data.description}
+                date={post.data.date}
+                tags={post.data.tags}
+                slug={post.id}
+                classDelay={`delay-${(index % 6) + 1}`}
+              />
+            ))}
+          </div>
+        )
+      }
     </div>
   </section>
 </BaseLayout>
@@ -82,7 +92,11 @@ const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.get
   .blog-orb--violet {
     width: 500px;
     height: 500px;
-    background: radial-gradient(circle, rgba(124, 58, 237, 0.08), transparent 70%);
+    background: radial-gradient(
+      circle,
+      rgba(124, 58, 237, 0.08),
+      transparent 70%
+    );
     top: -100px;
     right: -100px;
     animation: floatOrb 10s ease-in-out infinite;
@@ -91,15 +105,24 @@ const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.get
   .blog-orb--orange {
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, rgba(255, 107, 0, 0.06), transparent 70%);
+    background: radial-gradient(
+      circle,
+      rgba(255, 107, 0, 0.06),
+      transparent 70%
+    );
     bottom: -150px;
     left: -150px;
     animation: floatOrb 12s ease-in-out infinite reverse 2s;
   }
 
   @keyframes floatOrb {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50%       { transform: translate(30px, -30px) scale(1.1); }
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+    50% {
+      transform: translate(30px, -30px) scale(1.1);
+    }
   }
 
   .section-container {
@@ -139,7 +162,11 @@ const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.get
   }
 
   .title-accent {
-    background: linear-gradient(135deg, var(--orange-core), var(--accent-violet));
+    background: linear-gradient(
+      135deg,
+      var(--orange-core),
+      var(--accent-violet)
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -172,7 +199,11 @@ const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.get
   .line-body {
     width: 80px;
     height: 1px;
-    background: linear-gradient(to right, var(--orange-dim), var(--accent-violet));
+    background: linear-gradient(
+      to right,
+      var(--orange-dim),
+      var(--accent-violet)
+    );
     border-radius: 1px;
   }
 

@@ -14,6 +14,8 @@ const projects = defineCollection({
     cover: z.string().optional(),
     featured: z.boolean().default(false),
     date: z.coerce.date(),
+    // Añadimos la propiedad draft como un booleano opcional o requerido
+    draft: z.boolean().optional().default(false), 
   }),
 });
 
@@ -25,6 +27,8 @@ const blog = defineCollection({
     date: z.coerce.date(),
     tags: z.array(z.string()).default([]),
     cover: z.string().optional(),
+    // Añadimos la propiedad draft como un booleano opcional o requerido
+    draft: z.boolean().optional().default(false), 
   }),
 });
 

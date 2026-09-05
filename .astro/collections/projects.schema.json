@@ -39,6 +39,10 @@
       "type": "string",
       "format": "date-time"
     },
+    "draft": {
+      "default": false,
+      "type": "boolean"
+    },
     "$schema": {
       "type": "string"
     }
