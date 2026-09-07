@@ -7,7 +7,7 @@ tech: ["TypeScript", "Jest", "TDD", "Testing"]
 stars: 0
 featured: true
 date: 2021-06-03
-draft: true
+draft: false
 
 ---
 

@@ -5,7 +5,10 @@ import { getCollection } from "astro:content";
 
 // Obtener y ordenar proyectos por fecha descendente de forma estática en build-time
 const projects = await getCollection("projects");
-const sortedProjects = projects.sort(
+const visibleProjects = projects.filter((project) =>
+  import.meta.env.PROD ? !project.data.draft : true,
+);
+const sortedProjects = visibleProjects.sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime(),
 );
 ---
@@ -19,22 +22,22 @@ const sortedProjects = projects.sort(
   ============================================================ -->
   <section class="hero dot-grid" aria-label="Introducción" id="hero">
     <!-- Orbes de luz decorativas de fondo -->
-    <!-- <div class="hero-orb hero-orb--orange" aria-hidden="true"></div>
+    <div class="hero-orb hero-orb--orange" aria-hidden="true"></div>
     <div class="hero-orb hero-orb--violet" aria-hidden="true"></div>
-    <div class="hero-orb hero-orb--blue" aria-hidden="true"></div> -->
+    <div class="hero-orb hero-orb--blue" aria-hidden="true"></div>
 
     <!-- Partículas flotantes -->
-    <!-- <div class="particles" aria-hidden="true">
+    <div class="particles" aria-hidden="true">
       {
         Array.from({ length: 12 }).map((_, i) => (
           <span class={`particle particle-${i + 1}`} />
         ))
       }
-    </div> -->
+    </div>
 
     <div class="hero-container">
       <!-- Avatar con múltiples anillos pulsantes y escáner -->
-      <!-- <div class="avatar-wrapper" aria-hidden="true">
+      <div class="avatar-wrapper" aria-hidden="true">
         <div class="avatar-ring avatar-ring--scan"></div>
         <div class="avatar-ring avatar-ring--1"></div>
         <div class="avatar-ring avatar-ring--2"></div>
@@ -43,7 +46,7 @@ const sortedProjects = projects.sort(
           <span class="avatar-text">AP</span>
           <div class="avatar-shine"></div>
         </div>
-      </div> -->
+      </div>
 
       <div class="hero-content animate-fade-in delay-1">
         <!-- Badge de disponibilidad con punto pulsante -->
@@ -186,7 +189,8 @@ const sortedProjects = projects.sort(
 
       <!-- /* Recorre la carpeta de proyectos y renderiza los que NO ESTAN en draft */ -->
 
-      <!-- {        sortedProjects.length === 0 ? (
+      {
+        sortedProjects.length === 0 ? (
           <div class="no-projects">
             <p>
               No se encontraron proyectos. ¡Añade tu primer markdown en{" "}
@@ -210,7 +214,7 @@ const sortedProjects = projects.sort(
             ))}
           </div>
         )
-      }  -->
+      }
     </div>
   </section>
 </BaseLayout>

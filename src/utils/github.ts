@@ -56,32 +56,28 @@ export function sanitizeUrl(url: string | null | undefined): string | null {
 export async function getLiveLink(
   frontmatterLive: string | null | undefined,
   repoUrl: string,
-  slug: string
+  _slug: string
 ): Promise<string | null> {
   // 1. Prioridad absoluta: enlace definido en el frontmatter
   if (frontmatterLive && frontmatterLive.trim() !== '') {
     const sanitized = sanitizeUrl(frontmatterLive);
     if (sanitized) return sanitized;
-    console.warn(`[GitHub API] Enlace live del frontmatter no es seguro o válido: "${frontmatterLive}"`);
+    return null;
   }
 
   // 2. Si no hay live, resolver usando la API de GitHub
   const repoInfo = parseGitHubRepo(repoUrl);
-  if (!repoInfo) {
-    console.warn(`[GitHub API] No se pudo parsear el repositorio de GitHub para el slug "${slug}": "${repoUrl}"`);
-    return null;
-  }
+  if (!repoInfo) return null;
 
   const { owner, repo } = repoInfo;
   const apiUrl = `https://api.github.com/repos/${owner}/${repo}`;
-  
+
   try {
     const headers: Record<string, string> = {
       'User-Agent': 'Astro-Portfolio-Build-Agent',
       'Accept': 'application/vnd.github.v3+json',
     };
 
-    // Añadir token de autorización si está presente para evitar límites de API (Rate Limiting)
     if (process.env.GITHUB_TOKEN) {
       headers['Authorization'] = `token ${process.env.GITHUB_TOKEN}`;
     }
@@ -89,23 +85,19 @@ export async function getLiveLink(
     const response = await fetch(apiUrl, { headers });
 
     if (!response.ok) {
-      console.warn(
-        `[GitHub API] Error al obtener el repositorio ${owner}/${repo} (status ${response.status}) para el slug "${slug}".`
-      );
       return null;
     }
 
     const data = (await response.json()) as { homepage?: string | null };
-    
+
     if (data && data.homepage) {
       const sanitizedHomepage = sanitizeUrl(data.homepage);
       if (sanitizedHomepage) {
-        console.log(`[GitHub API] Enlace live resuelto para "${slug}" -> ${sanitizedHomepage}`);
         return sanitizedHomepage;
       }
     }
-  } catch (error) {
-    console.error(`[GitHub API] Error de red al consultar ${apiUrl} para el slug "${slug}":`, error);
+  } catch {
+    return null;
   }
 
   return null;

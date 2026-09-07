@@ -7,7 +7,7 @@ tech: ["Angular", "TypeScript", "RxJS", "SCSS"]
 stars: 0
 featured: true
 date: 2025-08-25
-draft: true
+draft: false
 
 ---
 

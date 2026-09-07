@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 
 // Generar rutas estáticas estáticamente en build-time
 export async function getStaticPaths() {
@@ -20,8 +20,7 @@ export async function getStaticPaths() {
 }
 
 const { post, prev, next } = Astro.props;
-const renderContent = post.rendered;
-const Content = renderContent ? (renderContent as any).Content : null;
+const { Content } = await render(post);
 
 // Formatear la fecha en español de forma elegante
 const formattedDate = post.data.date.toLocaleDateString('es-ES', {

@@ -7,7 +7,7 @@ tech: ["VueJS", "TypeScript", "Mapbox", "Tailwind"]
 stars: 0
 featured: true
 date: 2021-09-02
-draft: true
+draft: false
 
 ---
 

@@ -7,7 +7,7 @@ tech: ["Angular", "TypeScript", "Bootstrap", "RxJS"]
 stars: 0
 featured: true
 date: 2025-08-12
-draft: true
+draft: false
 
 ---
 

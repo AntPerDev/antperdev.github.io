@@ -7,7 +7,7 @@ tech: ["NestJS", "TypeScript", "MongoDB", "NodeJS"]
 stars: 0
 featured: true
 date: 2023-09-13
-draft: true
+draft: false
 
 ---
 
