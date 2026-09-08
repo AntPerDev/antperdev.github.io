@@ -28,7 +28,7 @@ const blog = defineCollection({
     tags: z.array(z.string()).default([]),
     cover: z.string().optional(),
     // Añadimos la propiedad draft como un booleano opcional o requerido
-    // draft: z.boolean().optional().default(false), 
+    draft: z.boolean().optional().default(false), 
   }),
 });
 

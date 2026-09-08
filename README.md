@@ -10,7 +10,7 @@ Mi portafolio profesional construido con **Astro**, showcaseando proyectos, art�
 
 Este es un portafolio web moderno y de alto rendimiento que destaca:
 
-- **Proyectos Destacados**: Una colección curada de mis proyectos más relevantes en desarrollo web
+- **Proyectos Destacados**: Una colección  de mis proyectos más relevantes en desarrollo web
 - **Blog Técnico**: Artículos sobre patrones de diseño, herramientas, cursos y tecnologías
 - **Diseño Responsivo**: Experiencia optimizada para desktop, tablet y dispositivos móviles
 - **Performance Optimizado**: Construido con Astro para máxima velocidad y SEO

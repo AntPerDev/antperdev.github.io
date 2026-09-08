@@ -2,14 +2,17 @@
  * Parseador seguro de URLs de repositorios de GitHub.
  * Extrae el propietario y el nombre del repositorio de forma estricta.
  */
-export function parseGitHubRepo(url: string): { owner: string; repo: string } | null {
+export function parseGitHubRepo(
+  url: string,
+): { owner: string; repo: string } | null {
   if (!url) return null;
-  
+
   try {
     // Expresión regular robusta para validar URLs de repositorios de GitHub
-    const regex = /^https?:\/\/(?:www\.)?github\.com\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)\/?$/;
+    const regex =
+      /^https?:\/\/(?:www\.)?github\.com\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)\/?$/;
     const match = url.trim().match(regex);
-    
+
     if (match) {
       return {
         owner: match[1],
@@ -17,9 +20,9 @@ export function parseGitHubRepo(url: string): { owner: string; repo: string } | 
       };
     }
   } catch (error) {
-    console.error('Error al analizar la URL de GitHub:', error);
+    console.error("Error al analizar la URL de GitHub:", error);
   }
-  
+
   return null;
 }
 
@@ -29,23 +32,23 @@ export function parseGitHubRepo(url: string): { owner: string; repo: string } | 
  */
 export function sanitizeUrl(url: string | null | undefined): string | null {
   if (!url) return null;
-  
+
   const trimmed = url.trim();
-  if (trimmed === '') return null;
-  
+  if (trimmed === "") return null;
+
   try {
     const parsed = new URL(trimmed);
     // Permitir estrictamente http: y https:
-    if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+    if (parsed.protocol === "http:" || parsed.protocol === "https:") {
       return trimmed;
     }
   } catch (e) {
     // Si no es una URL absoluta válida pero podría ser un path relativo seguro (ej. /images/...)
-    if (trimmed.startsWith('/') && !trimmed.startsWith('//')) {
+    if (trimmed.startsWith("/") && !trimmed.startsWith("//")) {
       return trimmed;
     }
   }
-  
+
   return null;
 }
 
@@ -56,10 +59,10 @@ export function sanitizeUrl(url: string | null | undefined): string | null {
 export async function getLiveLink(
   frontmatterLive: string | null | undefined,
   repoUrl: string,
-  _slug: string
+  _slug: string,
 ): Promise<string | null> {
   // 1. Prioridad absoluta: enlace definido en el frontmatter
-  if (frontmatterLive && frontmatterLive.trim() !== '') {
+  if (frontmatterLive && frontmatterLive.trim() !== "") {
     const sanitized = sanitizeUrl(frontmatterLive);
     if (sanitized) return sanitized;
     return null;
@@ -74,12 +77,12 @@ export async function getLiveLink(
 
   try {
     const headers: Record<string, string> = {
-      'User-Agent': 'Astro-Portfolio-Build-Agent',
-      'Accept': 'application/vnd.github.v3+json',
+      "User-Agent": "Astro-Portfolio-Build-Agent",
+      Accept: "application/vnd.github.v3+json",
     };
 
     if (process.env.GITHUB_TOKEN) {
-      headers['Authorization'] = `token ${process.env.GITHUB_TOKEN}`;
+      headers["Authorization"] = `token ${process.env.GITHUB_TOKEN}`;
     }
 
     const response = await fetch(apiUrl, { headers });
