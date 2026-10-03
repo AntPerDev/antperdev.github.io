@@ -22,10 +22,7 @@ const mobileHeroImage = await getImage({
 
 // Obtener y ordenar proyectos por fecha descendente de forma estática en build-time
 const projects = await getCollection("projects");
-const visibleProjects = projects.filter((project) =>
-  import.meta.env.PROD ? !project.data.draft : true,
-);
-const sortedProjects = visibleProjects.sort(
+const sortedProjects = projects.sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime(),
 );
 ---
@@ -100,18 +97,12 @@ const sortedProjects = visibleProjects.sort(
         </p>
 
         <p class="hero-bio">
-          Construyo sitios web en los que la gente desde el navegador de su
-          teléfono, su televisor inteligente, su ordenador, puede interactuar,
-          comprar algo, reservar un viaje, buscar una oferta de empleo, o
-          reservar una cita con su médico, entre otras muchas cosas. Diseño
-          tanto la parte que se ve en pantalla —los botones, formularios, el
-          diseño web "frontend"— como la parte de detrás que hace que todo
-          funcione (desarrollo backend), como guardar los datos o confirmar una
-          reserva. Mi ocupación se llama desarrollador de aplicaciones web,
-          desarrollador web full-stack. También se puede ver en algunos sitios
-          como Software engineer (versión en inglés, muy usada también en
-          ofertas en español, sobre todo de empresas tech) ó Desarrollador de
-          plataformas web.
+          Desarrollo sitios y aplicaciones web completos, desde las pantallas
+          que utilizas hasta los sistemas que funcionan detrás. Así, las
+          personas pueden realizar tareas como comprar, reservar o encontrar
+          información de forma sencilla y fiable. Me ocupo tanto de la parte
+          visible como de las funciones y los datos que hacen posible cada
+          servicio. Este perfil se conoce como desarrollo web full-stack.
         </p>
 
         <!-- Stats rápidas -->
@@ -218,7 +209,7 @@ const sortedProjects = visibleProjects.sort(
         </div>
       </div>
 
-      <!-- /* Recorre la carpeta de proyectos y renderiza los que NO ESTAN en draft */ -->
+      <!-- Recorre la carpeta de proyectos y muestra todos los archivos Markdown -->
 
       {
         sortedProjects.length === 0 ? (
